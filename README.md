@@ -1,4 +1,4 @@
-# money-keeper-learning-project
+# Money-keeper-learning-project
 
 ## Project setup
 ```
