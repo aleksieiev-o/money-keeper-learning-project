@@ -1,30 +1,116 @@
 <template>
-    <li class="block-form__item">
-        <input placeholder="Наименование" class="input block-form__input"
-               type="text"
-               v-model="getFormOne.first">
-        <input placeholder="Цена" class="input block-form__input"
-               type="text"
-               v-model="getFormOne.second">
-    </li>
+    <div class="wrap">
+        <ul class="block-form__list block-form__list--first">
+            <li class="block-form__item">
+                <input placeholder="Наименование" class="input block-form__input"
+                       type="text"
+                       maxlength="25"
+                       v-model="name">
+                <input placeholder="Цена" class="input block-form__input"
+                       type="number"
+                       maxlength="10"
+                       v-model="prise">
+            </li>
+            <button
+                class="btn-form btn-form--del"
+                title="Удалить из списка"
+                @click="delInData">-
+            </button>
+            <button
+                class="btn-form btn-form--add"
+                title="Добавить в список"
+                @click="addInData">+
+            </button>
+        </ul>
+        <ul class="block-form__array">
+            <li class="block-form__array-item"
+                :key="arrayList.name"
+                v-for="item of arrayList" >
+                <p>{{ item.name }}</p>
+                <p>{{ item.prise }}</p>
+            </li>
+        </ul>
+        <button
+            class="btn btn--small"
+            @click="result">
+            Утвердить
+        </button>
+    </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
     name: 'FormOneItem',
-    computed: {
-        ...mapGetters([
-            'getFormOne',
-        ]),
+    methods: {
+        addInData() {
+            if (this.name === null || this.prise === null) {
+                return
+            }
+            this.arrayList.push({ name: this.name, prise: this.prise })
+            this.name = null
+            this.prise = null
+        },
+        delInData() {
+            this.arrayList.pop()
+        },
+        result() {
+            this.$store.commit('setResult', this.summa)
+        },
+    },
+    data() {
+        return {
+            name: null,
+            prise: null,
+            summa: null,
+            arrayList: [],
+        }
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .block-form__item {
-        align-items: center;
+    .wrap {
+        width: 100%;
         display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn-form {
+        height: 20px;
+        width: 40px;
+        font-size: 17px;
+        line-height: 0;
+        margin-left: auto;
+        margin-right: 5px;
+        position: absolute;
+        right: 3rem;
+        &:focus {
+            border: 1px solid lightgray;
+        }
+        &--del {
+            bottom: 1.5rem;
+        }
+        &--add {
+            bottom: 0;
+        }
+    }
+    .block-form {
+        &__array {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        &__array-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            & > * {
+                &:not(:last-child) {
+                    margin-right: 15px;
+                }
+            }
+        }
     }
 </style>

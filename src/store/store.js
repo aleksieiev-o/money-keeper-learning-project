@@ -5,45 +5,54 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        formOne: [
-            { id: Math.random(), first: '', second: '' },
-        ],
-        resultArr: [
-            { key: 'Доход:', value: '-' },
-            { key: 'Бюджет на 1 день:', value: '-' },
-            { key: 'Уровень дохода:', value: '-' },
-            { key: 'Обязательные расходы:', value: '-' },
-            { key: 'Возможные траты:', value: '-' },
-            { key: 'Дополнительный доход:', value: '-' },
-            { key: 'Накопления за 1 месяц:', value: '-' },
-            { key: 'Накопления за 1 год:', value: '-' },
-        ],
+        start: false,
+        rightComponents: 'app-question',
+        formOne: [],
+        resultQuest: {
+            date: '',
+            budget: '',
+        },
+        resultArr: {
+            one: { key: 'Бюджет на месяц:', value: '-' },
+            two: { key: 'Бюджет на 1 день:', value: '-' },
+            three: { key: 'Уровень дохода:', value: '-' },
+            four: { key: 'Обязательные расходы:', value: '-' },
+            five: { key: 'Возможные траты:', value: '-' },
+            six: { key: 'Дополнительный доход:', value: '-' },
+            seven: { key: 'Накопления за 1 месяц:', value: '-' },
+            eight: { key: 'Накопления за 1 год:', value: '-' },
+        },
     },
     getters: {
+        getRightComponents(state) {
+            return state.rightComponents
+        },
+        getStart(state) {
+            return state.start
+        },
         getFormOne(state) {
             return state.formOne
         },
         getResultArr(state) {
             return state.resultArr
         },
-    },
-    actions: {
-        addForm({ commit }) {
-            commit('addForm')
-        },
-        delForm({ commit }) {
-            if (this.state.formOne.length < 2) {
-                return false
-            }
-            commit('delForm')
+        getResultQuest(state) {
+            return state.resultQuest
         },
     },
     mutations: {
-        addForm(state) {
-            state.formOne.push({ id: Math.random(), first: '', second: '' })
+        next(state) {
+            state.start = true
+            state.rightComponents = 'app-result'
         },
-        delForm(state) {
-            state.formOne.pop()
+        setDateBudget(state, payload) {
+            state.resultQuest = Object.assign(state.resultQuest, payload)
+            state.resultArr.one.value = state.resultQuest.budget
         },
+        setResult(state, payload) {
+            state.resultArr.four.value = payload
+        },
+    },
+    actions: {
     },
 });

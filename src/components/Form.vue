@@ -1,25 +1,11 @@
 <template>
     <section class="block-form">
+        <div class="block-form__overlay" v-if="!getStart"></div>
         <div class="block-form__group">
             <h3 class="title title--small">
                 Введите обязательные расходы
             </h3>
-            <ul class="block-form__list">
-                <app-form-one-item :key="item.id" v-for="item of getFormOne">
-                    {{ item }}
-                </app-form-one-item>
-                <button
-                    class="btn-form btn-form--del"
-                    title="Удалить форму"
-                    @click="delForm">-
-                </button>
-                <button
-                    class="btn-form btn-form--add"
-                    title="Добавить форму"
-                    @click="addForm">+
-                </button>
-            </ul>
-            <button class="btn btn--small">Утвердить</button>
+            <app-form-one-item></app-form-one-item>
         </div>
         <div class="block-form__group">
             <h3 class="title title--samll">
@@ -44,10 +30,13 @@
             <h3 class="title title--small">
                 Статьи возможного дохода
             </h3>
-            <div class="block-form__list">
-                <input placeholder="Введите статьи возможного дохода через запятую"
-                       class="input block-form__input block-form__input--big"
-                       type="text">
+            <div class="block-form__list block-form__list--three">
+                <textarea
+                    class="input block-form__input block-form__input--big"
+                    placeholder="Ведите статьи возможного дохода через запятую"
+                    name="dop"
+                    rows="5">
+                </textarea>
             </div>
         </div>
         <div class="block-form__group">
@@ -66,12 +55,11 @@
                 <input placeholder="Введите число" type="text" id="check3">
             </label>
         </div>
-        <button class="btn btn--big">Начать расчет</button>
     </section>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import FormOneItem from './FormOneItem.vue'
 
 export default {
@@ -79,16 +67,8 @@ export default {
     components: {
         'app-form-one-item': FormOneItem,
     },
-    methods: {
-        ...mapActions([
-            'addForm',
-            'delForm',
-        ]),
-    },
     computed: {
-        ...mapGetters([
-            'getFormOne',
-        ]),
+        ...mapGetters(['getStart']),
     },
 };
 </script>
@@ -97,7 +77,8 @@ export default {
     input {
         border: 1px solid rgba(lightgray, .5);
         border-radius: 3px;
-        &[type="text"] {
+        &[type="text"],
+        &[type="number"] {
             background-color: #fff;
             box-shadow: 0 2.5px 10px 0 rgba(1,0,42,.1);
             height: 35px;
@@ -116,6 +97,24 @@ export default {
     .block-form__input {
         &--big {
             width: 100%;
+        }
+    }
+    textarea {
+        border: 1px solid rgba(lightgray, .5);
+        border-radius: 3px;
+        background-color: #fff;
+        box-shadow: 0 2.5px 10px 0 rgba(1,0,42,.1);
+        padding: 3px;
+        margin: 5px;
+        transition: all linear .3s;
+        resize: none;
+        overflow-y: auto;
+        &:focus {
+            outline: rgba(lightgray, .9);
+            border: 1px solid rgba(#999, 1);
+        }
+        &::placeholder {
+            opacity: .5;
         }
     }
     button {
@@ -145,10 +144,24 @@ export default {
             background-image: linear-gradient(336deg, #ff964b, #ff964b),
                 linear-gradient(#fff, #fff);
         }
-        &--big {
-            height: 45px;
-            padding: 0 30px;
-            text-transform: uppercase;
+    }
+    .block-form {
+        &__list {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 5px;
+            flex-direction: column;
+            &--first,
+            &--three {
+                max-width: 565px;
+            }
+        }
+        &__item {
+            display: flex;
+            align-items: center;
         }
     }
 </style>
@@ -160,6 +173,17 @@ export default {
         flex-direction: column;
         padding: 0 30px;
         width: 65%;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        &__overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
         &__group {
             width: 100%;
             display: flex;
@@ -171,38 +195,6 @@ export default {
                 justify-content: center;
                 margin-bottom: 20px;
             }
-        }
-        &__list {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 5px;
-            flex-direction: column;
-        }
-        &__item {
-            display: flex;
-            align-items: center;
-        }
-    }
-    .btn-form {
-        height: 20px;
-        width: 40px;
-        font-size: 17px;
-        line-height: 0;
-        margin-left: auto;
-        margin-right: 5px;
-        position: absolute;
-        right: 3rem;
-        &:focus {
-            border: 1px solid lightgray;
-        }
-        &--del {
-            bottom: 1.5rem;
-        }
-        &--add {
-            bottom: 0;
         }
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <section class="block-result">
         <ul class="block-result__list">
-            <li class="block-result__item" :key="item.key" v-for="item of getResultArr">
+            <li class="block-result__item" :key="key" v-for="(item, key) of getResultArr">
                 <span class="block-result__key">
                     {{ item.key }}
                 </span>
@@ -13,28 +13,33 @@
         <div class="block-result__data">
             <label for="year">
                 Год
-                <input type="text" disabled id="year">
+                <input type="text" disabled id="year" :value="getResultQuest.date">
             </label>
             <label for="mouth">
                 Месяц
-                <input type="text" disabled id="mouth">
+                <input type="text" disabled id="mouth" :value="getResultQuest.date">
             </label>
             <label for="day">
                 День
-                <input type="text" disabled id="day">
+                <input type="text" disabled id="day" :value="getResultQuest.date">
             </label>
         </div>
     </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'Result',
     computed: {
         ...mapGetters([
             'getResultArr',
+            'getResultQuest',
+        ]),
+    },
+    methods: {
+        ...mapActions([
         ]),
     },
 }
@@ -48,17 +53,21 @@ export default {
         align-items: center;
         display: flex;
         justify-content: space-between;
-        width: 125px;
+        width: 145px;
     }
     input {
-        width: 60px;
+        width: 80px;
     }
     .block-result {
-        background-color: #fff;
         width: calc(100% - 65%);
+        border-radius: 5px;
         margin-right: 30px;
         margin-top: 20px;
+        height: 100%;
+        overflow-y: auto;
+        padding: 10px;
         &__list {
+            background-color: #fff;
             align-items: center;
             display: flex;
             flex-direction: column;

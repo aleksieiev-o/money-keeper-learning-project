@@ -5,12 +5,13 @@
         </header>
         <main class="main">
             <app-form></app-form>
-            <app-result></app-result>
+            <component :is="getRightComponents"></component>
         </main>
     </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Form from './components/Form.vue'
 import Result from './components/Result.vue'
 import Question from './components/Question.vue'
@@ -21,6 +22,11 @@ export default {
         'app-form': Form,
         'app-result': Result,
         'app-question': Question,
+    },
+    computed: {
+        ...mapGetters([
+            'getRightComponents',
+        ]),
     },
     data() {
         return {
@@ -47,12 +53,21 @@ export default {
         display: flex;
         flex-direction: column;
         background-color: #faf8f5;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .header {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .main {
         align-items: flex-start;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         width: 100%;
+        height: calc(100% - 80px);
     }
     .title {
         padding: 10px;
