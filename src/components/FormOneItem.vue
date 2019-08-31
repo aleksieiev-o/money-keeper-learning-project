@@ -9,7 +9,7 @@
                 <input placeholder="Цена" class="input block-form__input"
                        type="number"
                        maxlength="10"
-                       v-model="prise">
+                       v-model.number="prise">
             </li>
             <button
                 class="btn-form btn-form--del"
@@ -24,8 +24,8 @@
         </ul>
         <ul class="block-form__array">
             <li class="block-form__array-item"
-                :key="arrayList.name"
-                v-for="item of arrayList" >
+                :key="key"
+                v-for="(item, key) of arrayList">
                 <p>{{ item.name }}</p>
                 <p>{{ item.prise }}</p>
             </li>
@@ -52,9 +52,12 @@ export default {
         },
         delInData() {
             this.arrayList.pop()
+            this.name = null
+            this.prise = null
         },
         result() {
-            this.$store.commit('setResult', this.summa)
+            this.summa = this.arrayList.reduce((sum, n) => sum + n.prise, 0)
+            this.$store.commit('setResultFour', this.summa)
         },
     },
     data() {

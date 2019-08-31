@@ -13,18 +13,29 @@
             </h3>
             <ul class="block-form__list">
                 <li class="block-form__item">
-                    <input class="input block-form__input" type="text">
-                    <input class="input block-form__input" type="text">
-                    <input class="input block-form__input" type="text">
+                    <input
+                        class="input block-form__input"
+                        type="text"
+                        v-model="dopForm.dopFormOne">
+                    <input
+                        class="input block-form__input"
+                        type="text"
+                        v-model="dopForm.dopFormTwo">
+                    <input
+                        class="input block-form__input"
+                        type="text"
+                        v-model="dopForm.dopFormThree">
                 </li>
             </ul>
-            <button class="btn btn--small">Утвердить</button>
+            <button class="btn btn--small" @click="result">Утвердить</button>
         </div>
         <div class="block-form__group">
             <h3 class="title title--small">
                 Расчет дневного бюджета
             </h3>
-            <button class="btn btn--small">Расчитать</button>
+            <button class="btn btn--big" @click="greatResult">
+                Расчитать
+            </button>
         </div>
         <div class="block-form__group">
             <h3 class="title title--small">
@@ -35,24 +46,33 @@
                     class="input block-form__input block-form__input--big"
                     placeholder="Ведите статьи возможного дохода через запятую"
                     name="dop"
-                    rows="5">
+                    rows="5"
+                    v-model="message">
                 </textarea>
             </div>
         </div>
         <div class="block-form__group">
             <label for="check1">
                 Есть ли накопления:
-                <input type="checkbox" id="check1">
+                <input type="checkbox" id="check1" v-model="deposit">
             </label>
         </div>
         <div class="block-form__group block-form__group--label">
             <label for="check2">
                 Сумма
-                <input placeholder="Введите число" type="text" id="check2">
+                <input
+                    placeholder="Введите число"
+                    type="number"
+                    id="check2"
+                    v-model.number="amountDeposit.sum">
             </label>
             <label for="check3">
                 Процент
-                <input placeholder="Введите число" type="text" id="check3">
+                <input
+                    placeholder="Введите число"
+                    type="number"
+                    id="check3"
+                    v-model.number="amountDeposit.prosent">
             </label>
         </div>
     </section>
@@ -67,8 +87,37 @@ export default {
     components: {
         'app-form-one-item': FormOneItem,
     },
+    methods: {
+        result() {
+            this.$store.commit('setResultFive', this.dopForm)
+            this.dopForm.dopFormOne = ''
+            this.dopForm.dopFormTwo = ''
+            this.dopForm.dopFormThree = ''
+        },
+        greatResult() {
+            if (this.deposit) {
+                this.$store.commit('setDeposit', this.amountDeposit)
+            }
+            this.$store.commit('setGreatResult', this.message)
+        },
+    },
     computed: {
         ...mapGetters(['getStart']),
+    },
+    data() {
+        return {
+            dopForm: {
+                dopFormOne: '',
+                dopFormTwo: '',
+                dopFormThree: '',
+            },
+            message: '',
+            deposit: false,
+            amountDeposit: {
+                sum: '',
+                prosent: '',
+            },
+        }
     },
 };
 </script>
@@ -143,6 +192,11 @@ export default {
         &:hover {
             background-image: linear-gradient(336deg, #ff964b, #ff964b),
                 linear-gradient(#fff, #fff);
+        }
+        &--big {
+            height: 45px;
+            padding: 0 30px;
+            text-transform: uppercase;
         }
     }
     .block-form {

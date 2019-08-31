@@ -31,9 +31,8 @@ export default {
     name: 'Question',
     methods: {
         nextScreen() {
-            if (this.date !== null && this.budget !== null) {
-                this.$store.commit('next')
-                this.$store.commit('setDateBudget', this.result)
+            if (this.result.date !== null && this.result.budget !== null) {
+                this.$store.commit('next', this.result)
             }
             return false
         },
@@ -92,13 +91,6 @@ export default {
             align-items: center;
             flex-direction: column;
             margin-bottom: 10px;
-        }
-    }
-    .btn {
-        &--big {
-            height: 45px;
-            padding: 0 30px;
-            text-transform: uppercase;
         }
     }
 </style>

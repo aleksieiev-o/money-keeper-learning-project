@@ -13,15 +13,24 @@
         <div class="block-result__data">
             <label for="year">
                 Год
-                <input type="text" disabled id="year" :value="getResultQuest.date">
+                <input
+                    type="text"
+                    disabled id="year"
+                    :value="parseDate.year">
             </label>
             <label for="mouth">
                 Месяц
-                <input type="text" disabled id="mouth" :value="getResultQuest.date">
+                <input
+                    type="text"
+                    disabled id="mouth"
+                    :value="parseDate.month">
             </label>
             <label for="day">
                 День
-                <input type="text" disabled id="day" :value="getResultQuest.date">
+                <input
+                    type="text"
+                    disabled id="day"
+                    :value="parseDate.day">
             </label>
         </div>
     </section>
@@ -37,6 +46,15 @@ export default {
             'getResultArr',
             'getResultQuest',
         ]),
+        parseDate() {
+            // const options = {
+            // }
+            return {
+                year: new Date(Date.parse(this.getResultQuest.date)).getFullYear(),
+                month: new Date(Date.parse(this.getResultQuest.date)).toLocaleString('ru', { month: 'long' }),
+                day: new Date(Date.parse(this.getResultQuest.date)).getDate(),
+            }
+        },
     },
     methods: {
         ...mapActions([
@@ -57,6 +75,7 @@ export default {
     }
     input {
         width: 80px;
+        padding-left: 10px;
     }
     .block-result {
         width: calc(100% - 65%);
