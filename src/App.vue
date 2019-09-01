@@ -5,7 +5,9 @@
         </header>
         <main class="main">
             <app-form></app-form>
-            <component :is="getRightComponents"></component>
+            <transition name="fade" mode="out-in">
+                <component :is="getRightComponents"></component>
+            </transition>
         </main>
     </section>
 </template>
@@ -73,5 +75,17 @@ export default {
         padding: 10px;
         text-align: center;
         color: #222;
+    }
+
+    .fade-enter {
+        opacity: 0;
+    }
+    .fade-enter-active {
+        transition: opacity .5s;
+        opacity: 1;
+    }
+    .fade-leave-active {
+        transition: opacity .5s;
+        opacity: 0;
     }
 </style>
